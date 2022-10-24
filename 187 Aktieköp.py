@@ -4,14 +4,16 @@
 Created on Wed Oct  5 12:45:41 2022
 @author: villi
 """
-import yfinance as yf
+
 import pandas_datareader as  panda
+import yfinance as yf
 import datetime as dt
-import matplotlib.pyplot as plt
 import os
+import tkinter as tk
 
 class Aktie:
     def __init__(self, företagsnamn, soliditet, pe, ps, history, omx):
+        
         self.företagsnamn=företagsnamn
         self.soliditet=soliditet
         self.pe=pe
@@ -27,7 +29,8 @@ class Aktie:
         value=list()
         for key in self.history:
             value.append(float(self.history[key]))
-            kursutveckling=((value[-1]-value[0])/value[0])*100
+
+        kursutveckling=((value[-1]-value[0])/value[0])*100
             
         return(kursutveckling)
     
@@ -58,13 +61,10 @@ class Aktie:
             omx.append(float(self.omx[key]))
         
         avkastning_omx=omx[-1]/omx[0]
-            
+    
         betha=avkastning_aktie/avkastning_omx
         
         return(betha)
-        
-         
-            
         
         
     def __repr__(self):
@@ -86,20 +86,7 @@ def check_day(date):
         
     return (weekday)
 
-def graph (history_data):
-
-    names = list(history_data.keys())
-    values = list(history_data.values())
-    plt.bar(range(len(history_data)), values, tick_label=names)
-    plt.show()
-      
-    stock_list=[]
-    for i in fundamentals:
-        stock_list.append(Aktie(fundamentals[i][0],fundamentals[i][1],fundamentals[i][2],fundamentals[i][3], get_history_data(fundamentals[i][0]), omx ))
-    
-    return(stock_list)
-    
-        
+       
 def get_history_data_offline (company_list):
     #Get data from : kurser.txt
     #Format: datum, böorskurs
@@ -110,23 +97,17 @@ def get_history_data_offline (company_list):
     content=txt.read()
     content_list=content.split()
     txt.close()
-    #print(content_list)
 
     cut_points=list()
     for i in range(0,len(content_list)):
         if content_list[i] in company_list:
             cut_points.append(i)
     cut_points.append(len(content_list))
-    #print(cut_points)
 
-
-        
     data=dict()
     for i in range (0,len(cut_points)-1):
         index=dict()
-        #print('i= ',cut_points[i])
         for j in range (cut_points[i]+1, cut_points[i+1],2):
-            #print('j= ',j)
             index[content_list[j]]=content_list[j+1]
         data[content_list[cut_points[i]]]=index
     
@@ -196,16 +177,27 @@ def get_fundamentals_data_offline (company_list):
     
 def get_fundamentals_data_online (companies):
     #Return dict: {name:[soliditet, p/e, p/s]}
-    
-    #info
-    #ticker = yf.Ticker('GOOGL').info
-    #print(ticker.keys())
+
     
     fundamentals_data=dict()
     
     for key in companies:
         data_list=list()
         company = yf.Ticker(companies[key]).info
+        
+    #Debt-To-Equity
+        try:
+            data_list.append(company["debtToEquity"])
+            
+        except KeyError:
+            data_list.append("None")
+            
+    #Price-to-Earnings
+        try:
+            data_list.append(company["trailingPE"])
+            
+        except KeyError:
+            data_list.append("None")
     
     #Price-to-Sales
         try:
@@ -214,24 +206,10 @@ def get_fundamentals_data_online (companies):
         except KeyError:
             data_list.append("None")
     
-    #Price-to-Earnings
-        try:
-            data_list.append(company["trailingPE"])
-            
-        except KeyError:
-            data_list.append("None")
-    
-    #Debt-To-Equity
-        try:
-            data_list.append(company["debtToEquity"])
-            
-        except KeyError:
-            data_list.append("None")
         
         fundamentals_data[key]=data_list
     
     return (fundamentals_data)
-
 
 def get_omx_offline():
     txt=open("generalindex.txt", "r", encoding="utf8")
@@ -392,10 +370,10 @@ def show_teknisk_menu (stock_list):
             if val <len(stock_list)+1:
                 print('')
                 print("-----Teknisk analys för ",stock_list[val-1].företagsnamn,"-----" )
-                print("kursutveckling(30 senaste dagarna)", stock_list[val-1].kursutveckling, "%")
-                print("betavärde", stock_list[val-1].betha)
+                print("kursutveckling(30 senaste dagarna)", stock_list[val-1].kursutveckling)
                 print("högsta kurs(30 senaste dagarna): ", stock_list[val-1].högsta_kurs)
                 print("lägsta kurs(30 senaste dagarna): ",stock_list[val-1].lägsta_kurs)
+                print("betavärde", stock_list[val-1].betha)
                 
             elif val==len(stock_list)+1:
                 break
@@ -444,6 +422,120 @@ def whant_gui():
             
     os.system('cls')     
     return(switch)
+
+def gui_menu(stock_list):
+    # Dropdown menu options
+    companies=list()
+    for company in stock_list:
+        companies.append(company.företagsnamn)
+        
+    my_w = tk.Tk()
+    my_w.geometry("750x500")  # Size of the window 
+    my_w.title("Aktieköp")  # Adding a title
+
+    options = tk.StringVar(my_w)
+    options.set("Defult") # default value
+
+    l1 = tk.Label(my_w,  text='Select One', width=10 )  
+    l1.grid(row=2,column=1) 
+
+    om1 =tk.OptionMenu(my_w, options, *companies)
+    om1.grid(row=2,column=2) 
+
+    b1 = tk.Button(my_w,  text='Show Technical', command=lambda: show_technical() )  
+    b1.grid(row=2,column=3) 
+    
+    b2 = tk.Button(my_w,  text='Show Fundamental', command=lambda: show_fundamental() )  
+    b2.grid(row=3,column=3) 
+    
+    b3 = tk.Button(my_w,  text='Show Betha', command=lambda: show_betha() )  
+    b3.grid(row=4,column=3) 
+
+    str_out=tk.StringVar(my_w)
+    str_out.set("Output")
+
+    l2 = tk.Label(my_w,  textvariable=str_out, width=10 )  
+    l2.grid(row=2,column=4) 
+    
+    def show_betha ():
+        betha=dict()
+    
+        for company in stock_list:
+            betha[company.företagsnamn]=round(float(company.betha),3)
+    
+        sorted_betha = sorted(betha.items(), key=lambda x: x[1], reverse=True)
+        
+        txt=str(sorted_betha[0] [0])+str(sorted_betha[0] [1])
+        betha1= tk.Label(my_w, text=txt)
+        betha1.grid(row=16,column=4) 
+        
+        txt=str(sorted_betha[1] [0])+str(sorted_betha[1] [1])
+        betha2= tk.Label(my_w, text=txt)
+        betha2.grid(row=17,column=4) 
+        
+        txt=str(sorted_betha[2] [0])+str(sorted_betha[2] [1])
+        betha3= tk.Label(my_w, text=txt)
+        betha3.grid(row=18,column=4) 
+        
+        try:
+            txt=str(sorted_betha[3] [0])+ str(sorted_betha[3] [1])
+            betha4= tk.Label(my_w, text=txt)
+            betha4.grid(row=19,column=4)
+             
+        except IndexError:
+            pass
+            
+
+    
+    def show_fundamental():
+        val=options.get()
+                
+        for company in stock_list:
+            if val==company.företagsnamn:
+                txt=str("-------- Fundamental Analys: " + str(company.företagsnamn) + "-------- ")
+                kursutveckling_label = tk.Label(my_w, text=txt)
+                kursutveckling_label.grid(row=4,column=4) 
+                
+                txt=str("   Företagets soliditet är: " + str(company.soliditet) + "   ")
+                soliditet_label = tk.Label(my_w, text=txt)
+                soliditet_label.grid(row=5,column=4) 
+                
+                txt=str("   Företagets p/e-tal är: " + str(company.pe) + "   ")
+                pe_label=tk.Label(my_w, text=txt)
+                pe_label.grid(row=6,column=4) 
+                
+                txt=str("   Företagets p/s-tal är: " + str(company.ps) + "   ")
+                ps_label=tk.Label(my_w, text=txt)
+                ps_label.grid(row=7,column=4) 
+
+    def show_technical():
+        val=options.get()
+
+        for company in stock_list:
+            if val==company.företagsnamn:
+                
+                txt=str("-------- Teknisk Analys: " + str(company.företagsnamn) + "-------- ")
+                kursutveckling_label = tk.Label(my_w, text=txt)
+                kursutveckling_label.grid(row=10,column=4) 
+                
+                txt=str("   Kursutveckling(30 senaste dagarna): " + str(company.kursutveckling) + "   ")
+                kursutveckling_label = tk.Label(my_w, text=txt)
+                kursutveckling_label.grid(row=11,column=4) 
+                
+                txt=str("   Högsta kurs(30 senaste dagarna): " + str(company.högsta_kurs) + "   ")
+                högsta_label=tk.Label(my_w, text=txt)
+                högsta_label.grid(row=12,column=4) 
+                
+                txt=str("   Lägsta kurs(30 senaste dagarna): " + str(company.lägsta_kurs) + "   ")
+                lägsta_label=tk.Label(my_w, text=txt)
+                lägsta_label.grid(row=13,column=4) 
+                
+                txt=str("   Betavärde: " + str(company.betha) + "   ")
+                betha_label=tk.Label(my_w, text=txt)
+                betha_label.grid(row=14,column=4) 
+                
+        
+    my_w.mainloop()
                      
 def main():
        
@@ -484,7 +576,7 @@ def main():
                 os.system('cls')
                 
     else:
-        gui_menu()
+        gui_menu(stock_list)
             
 os.system('cls')   
 main()
