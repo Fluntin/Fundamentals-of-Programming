@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-
-"""
-Created on Wed Oct  5 12:45:41 2022
-@author: villi
-"""
 import os
 import yfinance as yf
 import datetime as dt
