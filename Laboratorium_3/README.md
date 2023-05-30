@@ -1,3 +1,5 @@
+##Word Frequency Analysis
+
 To solve this task, you are required to write a program that reads all the words from a given text file (assumed to exist in the same directory as your program) and removes common words. You have the file "vanligaord.txt" available, which contains commonly occurring words.
 
 Create a text file using a text editor or Notepad. Open your web browser and find a text (e.g., a news article), then select the text, copy it, and paste it into your text editor.
