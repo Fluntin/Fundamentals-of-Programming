@@ -1,6 +1,7 @@
 To solve this task, you are required to write a program that reads all the words from a given text file (assumed to exist in the same directory as your program) and removes common words. You have the file "vanligaord.txt" available, which contains commonly occurring words.
 
-Create a text file using a text editor or Notepad (a program for editing text in the Windows operating system, or TextEdit if you are using macOS). Open your web browser and find a text (e.g., a news article), then select the text, copy it, and paste it into your text editor. Save the file in the same directory as your Python program with a ".txt" extension.
+Create a text file using a text editor or Notepad. Open your web browser and find a text (e.g., a news article), then select the text, copy it, and paste it into your text editor.
+Save the file in the same directory as your Python program with a ".txt" extension.
 
 Here's an example of how the program may run (program output is shown in red, user input is shown in green):
 ```
