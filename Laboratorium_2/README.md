@@ -2,23 +2,33 @@
 
 For a long jump competition, you want to save the values of the jumpers' results to later calculate statistics. The program should have the following dialogue:
 
+### Menu 1 - Enter the competitors' results
+
+```
 Menu
 1 - Enter the competitors' results.
 2 - View statistics for previously entered results.
 3 - Exit
+
 Your choice: 1
 Number of competitors: 10
 Enter the result for participant 1: 8.16
 Enter the result for participant 2: 7.48
 Enter the result for participant 3: .........
-...<back to the menu>
+```
 
+### Menu 2 - View statistics for previously entered results
+
+```
 Menu
 1 - Enter the competitors' results.
 2 - View statistics for previously entered results.
 3 - Exit
+
 Your choice: 2
-The average is 8.01m with a standard deviation of 0.56m. The highest value was 8.16m, and the lowest was 7.13m.
+The average is 8.01m with a standard deviation of 0.56m.
+The highest value was 8.16m, and the lowest was 7.13m.
+```
 
 To calculate the standard deviation, you can use the "statistics" module. Check which functions are available in this module (compare with how we used the "math" module).
 
