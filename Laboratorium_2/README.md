@@ -1,9 +1,3 @@
-## Terminology and Concepts for this Lab
-
-- All terms and concepts mentioned in the previous lab.
-- Conditionals and Loops: Programming constructs used to control the flow of execution based on certain conditions and to repeat a set of instructions multiple times.
-- Introduction to Lists: An ordered collection of items, where each item is assigned an index starting from 0.
-
 ## Length Jump Competition
 
 For a long jump competition, you want to save the values of the jumpers' results to later calculate statistics. The program should have the following dialogue:
