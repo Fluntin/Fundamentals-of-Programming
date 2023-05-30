@@ -1,4 +1,4 @@
-##Word Frequency Analysis
+## Word Frequency Analysis
 
 To solve this task, you are required to write a program that reads all the words from a given text file (assumed to exist in the same directory as your program) and removes common words. You have the file "vanligaord.txt" available, which contains commonly occurring words.
 
