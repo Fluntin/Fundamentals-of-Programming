@@ -39,10 +39,3 @@ W Tryptophan Hydrophobic 204.23
 D Aspartic Acid Acidic 133.1
 E Glutamic Acid Acidic 147.13
 ```
-
-Please note that the order of the amino acids may differ depending on the chosen property to sort on.
-
-Tips:
-- Implement a method for printing the objects using the `__str__` method.
-- Create a function to read the list of objects from the file.
-- Implement the main program to handle user input and call the appropriate functions/methods.
