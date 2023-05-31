@@ -45,4 +45,5 @@ $$
 m_p=\frac{4 \pi^2 r^3}{G T^2}
 $$
 
-Write a program that asks for the distance and orbital period (considering the appropriate units) and then calls a function to calculate the mass using the formula above. Look up the value for the Moon or the ISS (International Space Station) and see if it matches (Earth's mass should be approximately 6 x 10^24 kg).
+Write a program that asks for the distance and orbital period (considering the appropriate units) and then calls a function to calculate the mass using the formula above. Look up the value for the Moon or the ISS (International Space Station) and see if it matches.
+Earth's mass should be approximately $6$ x $10^{24}$ kg.
