@@ -36,5 +36,3 @@ The following are the requirements for the program:
 - It should have a function named "input_data()" and a function named "statistics()" with appropriate parameters and optional return values.
 - The main program should handle the menu selection. This example involves practicing conditionals and loops.
 - Do not use a separate variable for each jump result.
-
-Considerations: The "input_data()" function should not perform any output of results (menu option 2), but it should handle the following tasks: input, type conversion, and return value. This lab aims to practice control structures and conditions using while loops, for loops, "in" keyword, "range()", "len()", "if" statements, "break" keyword, and lists.
