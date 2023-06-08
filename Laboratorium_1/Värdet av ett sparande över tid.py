@@ -11,3 +11,5 @@ def main():
     print("Slutvärdet är", värde, "kr")
     
 main()
+
+#finish
